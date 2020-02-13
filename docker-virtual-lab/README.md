@@ -1,3 +1,3 @@
-# Docker Virtual Lab
+# Ceph Docker Virtual Lab
 
 WIP
