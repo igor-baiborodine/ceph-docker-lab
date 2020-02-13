@@ -1,4 +1,3 @@
-Docker Virtual Lab
-------------------
+# Docker Virtual Lab
 
 WIP
