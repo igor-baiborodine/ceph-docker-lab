@@ -1,3 +1,0 @@
-# oVirt Ansible Virtual Lab
-
-Coming soon...
