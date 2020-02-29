@@ -1,1 +1,1 @@
-# Ceph Docker Compose Lab
+# Ceph Docker Lab
