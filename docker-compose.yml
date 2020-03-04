@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  ceph-admin:
+    image: ceph-admin-node
+    container_name: ceph-admin
+    hostname: ceph-admin
+    tty: true
+
+  ceph-mon-1:
+    image: ceph-infra-node
+    container_name: ceph-mon-1
+    hostname: ceph-mon-1
+    privileged: true
