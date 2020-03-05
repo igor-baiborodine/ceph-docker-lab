@@ -1,5 +1,6 @@
 FROM centos:7
 
+ARG CEPH_LAB_ADMIN_PWD=abc123
 ENV container docker
 
 RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
@@ -17,6 +18,7 @@ RUN set -ex; \
     yum install -y iproute openssh-server chrony; \
     yum clean all; \
     useradd ceph-lab-admin; \
+    echo "ceph-lab-admin:$CEPH_LAB_ADMIN_PWD" | chpasswd; \
     mkdir /etc/sudoers.d; \
     echo "ceph-lab-admin ALL = (root) NOPASSWD:ALL" > /etc/sudoers.d/ceph-lab-admin; \
     chmod 0440 /etc/sudoers.d/ceph-lab-admin
