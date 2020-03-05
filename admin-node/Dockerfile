@@ -4,8 +4,7 @@ FROM centos:7
 RUN set -ex; \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-COPY /etc/yum.repos.d /etc/yum.repos.d
-COPY /etc/opt/ceph/preflight /etc/opt/ceph/preflight
+COPY ceph.repo /etc/yum.repos.d
 
 RUN set -ex; \
     yum -y update; \
@@ -16,5 +15,6 @@ RUN set -ex; \
 USER ceph-lab-admin
 
 RUN cat /dev/zero | ssh-keygen -q -N ""
+COPY ceph-infra-ssh-config.sh /home/ceph-lab-admin
 
 WORKDIR /home/ceph-lab-admin
