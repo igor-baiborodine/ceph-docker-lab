@@ -1,5 +1,7 @@
 FROM centos:7
 
+ARG CEPH_LAB_ADMIN_PWD=abc123
+
 # https://docs.ceph.com/docs/master/start/quick-start-preflight/
 RUN set -ex; \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -10,7 +12,8 @@ RUN set -ex; \
     yum -y update; \
     yum install -y iproute openssh-server openssh-clients ceph-deploy; \
     yum clean all; \
-    useradd ceph-lab-admin
+    useradd ceph-lab-admin; \
+    echo "ceph-lab-admin:$CEPH_LAB_ADMIN_PWD" | chpasswd
 
 USER ceph-lab-admin
 
