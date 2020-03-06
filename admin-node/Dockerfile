@@ -24,4 +24,4 @@ COPY ceph-infra-ssh-config.sh /home/ceph-lab-admin
 
 RUN cat /dev/zero | ssh-keygen -q -N ""
 
-WORKDIR /home/ceph-lab-admin
+WORKDIR /home/ceph-lab-admin/cluster

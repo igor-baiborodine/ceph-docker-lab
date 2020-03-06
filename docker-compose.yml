@@ -12,3 +12,5 @@ services:
     container_name: ceph-mon-1
     hostname: ceph-mon-1
     privileged: true
+    ports:
+      - "6789:6789"
