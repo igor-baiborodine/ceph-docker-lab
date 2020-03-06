@@ -8,7 +8,7 @@ COPY ceph.repo /etc/yum.repos.d
 RUN set -ex; \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
     yum -y update; \
-    yum install -y iproute openssh-server openssh-clients ceph-deploy; \
+    yum install -y nc iproute openssh-server openssh-clients ceph-deploy; \
     yum clean all; \
     useradd ceph-lab-admin; \
     echo "ceph-lab-admin:$CEPH_LAB_ADMIN_PWD" | chpasswd
