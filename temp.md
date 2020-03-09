@@ -2,23 +2,19 @@
 cd admin-node
 docker build --rm -t ceph-admin-node .
 ```
-
 ```bash
 cd infra-node
 docker build --rm -t ceph-infra-node .
 ```
-
 ```bash
 docker-compose up -d ceph-admin
 docker-compose up -d ceph-mon-1
 ```
-
 ```bash
 docker exec -it ceph-admin bash
 ```
-
 ```bash
-[ceph-lab-admin@ceph-admin ~]$ ./ceph-infra-ssh-config.sh ceph-mon-1
+[ceph-lab-admin@ceph-admin cluster]$ ../ceph-infra-ssh-config.sh ceph-mon-1
 + for hostname in '"$@"'
 + ssh-keyscan ceph-mon-1
 # ceph-mon-1:22 SSH-2.0-OpenSSH_7.4
@@ -43,7 +39,46 @@ and check to make sure that only the key(s) you wanted were added.
 logout
 Connection to ceph-mon-1 closed.
 ```
-
+```bash
+[ceph-lab-admin@ceph-admin cluster]$ ceph-deploy new ceph-mon-1
+[ceph_deploy.conf][DEBUG ] found configuration file at: /home/ceph-lab-admin/.cephdeploy.conf
+[ceph_deploy.cli][INFO  ] Invoked (2.0.1): /usr/bin/ceph-deploy new ceph-mon-1
+[ceph_deploy.cli][INFO  ] ceph-deploy options:
+[ceph_deploy.cli][INFO  ]  username                      : None
+[ceph_deploy.cli][INFO  ]  func                          : <function new at 0x7fbf83086d70>
+[ceph_deploy.cli][INFO  ]  verbose                       : False
+[ceph_deploy.cli][INFO  ]  overwrite_conf                : False
+[ceph_deploy.cli][INFO  ]  quiet                         : False
+[ceph_deploy.cli][INFO  ]  cd_conf                       : <ceph_deploy.conf.cephdeploy.Conf instance at 0x7fbf828003f8>
+[ceph_deploy.cli][INFO  ]  cluster                       : ceph
+[ceph_deploy.cli][INFO  ]  ssh_copykey                   : True
+[ceph_deploy.cli][INFO  ]  mon                           : ['ceph-mon-1']
+[ceph_deploy.cli][INFO  ]  public_network                : None
+[ceph_deploy.cli][INFO  ]  ceph_conf                     : None
+[ceph_deploy.cli][INFO  ]  cluster_network               : None
+[ceph_deploy.cli][INFO  ]  default_release               : False
+[ceph_deploy.cli][INFO  ]  fsid                          : None
+[ceph_deploy.new][DEBUG ] Creating new cluster named ceph
+[ceph_deploy.new][INFO  ] making sure passwordless SSH succeeds
+[ceph-mon-1][DEBUG ] connected to host: ceph-admin 
+[ceph-mon-1][INFO  ] Running command: ssh -CT -o BatchMode=yes ceph-mon-1
+[ceph-mon-1][DEBUG ] connection detected need for sudo
+[ceph-mon-1][DEBUG ] connected to host: ceph-mon-1 
+[ceph-mon-1][DEBUG ] detect platform information from remote host
+[ceph-mon-1][DEBUG ] detect machine type
+[ceph-mon-1][DEBUG ] find the location of an executable
+[ceph-mon-1][INFO  ] Running command: sudo /usr/sbin/ip link show
+[ceph-mon-1][INFO  ] Running command: sudo /usr/sbin/ip addr show
+[ceph-mon-1][DEBUG ] IP addresses found: [u'172.24.0.2']
+[ceph_deploy.new][DEBUG ] Resolving host ceph-mon-1
+[ceph_deploy.new][DEBUG ] Monitor ceph-mon-1 at 172.24.0.2
+[ceph_deploy.new][DEBUG ] Monitor initial members are ['ceph-mon-1']
+[ceph_deploy.new][DEBUG ] Monitor addrs are ['172.24.0.2']
+[ceph_deploy.new][DEBUG ] Creating a random mon key...
+[ceph_deploy.new][DEBUG ] Writing monitor keyring to ceph.mon.keyring...
+[ceph_deploy.new][DEBUG ] Writing initial config to ceph.conf...
+[ceph-lab-admin@ceph-admin cluster]$ 
+```
 
 
 
