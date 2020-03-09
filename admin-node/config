@@ -9,3 +9,7 @@ Host ceph-mon-2
 Host ceph-mon-3
     Hostname ceph-mon-3
     User ceph-lab-admin
+    
+Host ceph-mgr-1
+    Hostname ceph-mgr-1
+    User ceph-lab-admin    
