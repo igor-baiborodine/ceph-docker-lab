@@ -79,7 +79,16 @@ Connection to ceph-mon-1 closed.
 [ceph_deploy.new][DEBUG ] Writing initial config to ceph.conf...
 [ceph-lab-admin@ceph-admin cluster]$ 
 ```
-
+```bash
+[ceph-lab-admin@ceph-admin cluster]$ cat ceph.conf
+[global]
+fsid = b7cadf89-5399-4f15-af01-14776ad37d35
+mon_initial_members = ceph-mon-1
+mon_host = 172.24.0.2
+auth_cluster_required = cephx
+auth_service_required = cephx
+auth_client_required = cephx
+```
 
 
 
