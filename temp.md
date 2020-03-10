@@ -2,6 +2,10 @@ https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/instal
 
 ceph-deploy --cluster {cluster-name} new {host [host], ...}
 
+TODO: 
+* verify ntp sync
+* lvm for mon and osd nodes
+
 ```bash
 cd admin-node
 docker build --rm -t ceph-admin-node .
