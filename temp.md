@@ -1,3 +1,5 @@
+https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/installation_guide_for_red_hat_enterprise_linux/manually-installing-red-hat-ceph-storage
+
 ```bash
 cd admin-node
 docker build --rm -t ceph-admin-node .
