@@ -13,7 +13,7 @@ RUN set -ex; \
     useradd ceph-lab-admin; \
     echo "ceph-lab-admin:$CEPH_LAB_ADMIN_PWD" | chpasswd; \
     echo "ceph-lab-admin ALL = (root) NOPASSWD:ALL" > /etc/sudoers.d/ceph-lab-admin; \
-    mkdir /home/ceph-lab-admin/cluster
+    mkdir /home/ceph-lab-admin/lab-cluster
 
 COPY config /home/ceph-lab-admin/.ssh/config
 COPY ceph-infra-ssh-config.sh /home/ceph-lab-admin
@@ -25,4 +25,4 @@ USER ceph-lab-admin
 
 RUN cat /dev/zero | ssh-keygen -q -N ""
 
-WORKDIR /home/ceph-lab-admin/cluster
+WORKDIR /home/ceph-lab-admin/lab-cluster

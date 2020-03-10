@@ -12,29 +12,29 @@ services:
     container_name: ceph-mon-1
     hostname: ceph-mon-1
     privileged: true
-    ports:
-      - "6789:6789"
+    expose:
+      - "6789"
 
   ceph-mon-2:
     image: ceph-infra-node
     container_name: ceph-mon-2
     hostname: ceph-mon-2
     privileged: true
-    ports:
-      - "6789:6789"
+    expose:
+      - "6789"
 
   ceph-mon-3:
     image: ceph-infra-node
     container_name: ceph-mon-3
     hostname: ceph-mon-3
     privileged: true
-    ports:
-      - "6789:6789"
+    expose:
+      - "6789"
 
   ceph-mgr-1:
     image: ceph-infra-node
     container_name: ceph-mgr-1
     hostname: ceph-mgr-1
     privileged: true
-    ports:
-      - "6800-7300:6800-7300"
+    expose:
+      - "6800-7300"
