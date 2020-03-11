@@ -15,6 +15,20 @@ TODO:
 |ceph-osd-2|vgosd|lvosd2||300|
 |ceph-osd-3|vgosd|lvosd2||300|
 
+|Type|vCPU|RAM(GB)|Disk|Space(GB)|
+|:-|:-:|:-:|:-:|-:|
+|OS|2|2|2|410|
+|OSD1|2|2|1|1000|
+|OSD2|2|2|1|1000|
+|OSD3|2|2|1|1000|
+|MON|2|2||30|
+|MON|2|2||30|
+|MON|2|2||30|
+|MGR|1|1|||
+|MGR|1|1|||
+|RGW|4|8|||
+|Total|20|24|4|3500|
+
 ```bash
 cd admin-node
 docker build --rm -t ceph-admin-node .
