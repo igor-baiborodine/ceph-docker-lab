@@ -1,5 +1,7 @@
 https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/installation_guide_for_red_hat_enterprise_linux/manually-installing-red-hat-ceph-storage
 
+re: devices - https://docs.docker.com/engine/reference/commandline/run/
+
 ceph-deploy --cluster {cluster-name} new {host [host], ...}
 
 TODO: 
