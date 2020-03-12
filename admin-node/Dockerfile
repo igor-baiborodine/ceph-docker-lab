@@ -15,8 +15,8 @@ RUN set -ex; \
     echo "ceph-lab-admin ALL = (root) NOPASSWD:ALL" > /etc/sudoers.d/ceph-lab-admin; \
     mkdir /home/ceph-lab-admin/lab-cluster
 
-COPY config /home/ceph-lab-admin/.ssh/config
-COPY ceph-infra-ssh-config.sh /home/ceph-lab-admin
+COPY ./ssh/config /home/ceph-lab-admin/.ssh/config
+COPY infra-node-ssh-config.sh /home/ceph-lab-admin
 
 RUN chown -R ceph-lab-admin:ceph-lab-admin /home/ceph-lab-admin; \
     chmod 600 /home/ceph-lab-admin/.ssh/config

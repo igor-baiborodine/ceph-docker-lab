@@ -14,6 +14,8 @@ services:
     privileged: true
     expose:
       - "6789"
+    volumes:
+      - /var/lib/ceph-mon-1:/var/lib/ceph
 
   ceph-mon-2:
     image: ceph-infra-node
@@ -22,6 +24,8 @@ services:
     privileged: true
     expose:
       - "6789"
+    volumes:
+      - /var/lib/ceph-mon-2:/var/lib/ceph
 
   ceph-mon-3:
     image: ceph-infra-node
@@ -30,6 +34,8 @@ services:
     privileged: true
     expose:
       - "6789"
+    volumes:
+      - /var/lib/ceph-mon-3:/var/lib/ceph
 
   ceph-mgr-1:
     image: ceph-infra-node
@@ -38,3 +44,27 @@ services:
     privileged: true
     expose:
       - "6800-7300"
+
+  ceph-ods-1:
+    image: ceph-infra-node
+    container_name: ceph-ods-1
+    hostname: ceph-ods-1
+    privileged: true
+    expose:
+      - "6800:6810"
+
+  ceph-ods-2:
+    image: ceph-infra-node
+    container_name: ceph-ods-2
+    hostname: ceph-ods-2
+    privileged: true
+    expose:
+      - "6800:6810"
+
+  ceph-ods-3:
+    image: ceph-infra-node
+    container_name: ceph-ods-3
+    hostname: ceph-ods-3
+    privileged: true
+    expose:
+      - "6800:6810"

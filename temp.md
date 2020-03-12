@@ -8,12 +8,12 @@ TODO:
 
 |Node|VG|LV|Partition|Space(GB)|
 |:-|:-|:-|:-|:-:|
-|ceph-mon-1|vgceph|lvmon1|/var/lib/ceph-mon-1|50|
-|ceph-mon-2|vgceph|lvmon2|/var/lib/ceph-mon-2|50|
-|ceph-mon-3|vgceph|lvmon3|/var/lib/ceph-mon-3|50|
-|ceph-osd-1|vgceph|lvosd1||300|
-|ceph-osd-2|vgceph|lvosd2||300|
-|ceph-osd-3|vgceph|lvosd2||300|
+|ceph-mon-1|vgceph|lvmon1|/var/lib/ceph-mon-1|10|
+|ceph-mon-2|vgceph|lvmon2|/var/lib/ceph-mon-2|10|
+|ceph-mon-3|vgceph|lvmon3|/var/lib/ceph-mon-3|10|
+|ceph-osd-1|vgceph|lvosd1||250|
+|ceph-osd-2|vgceph|lvosd2||250|
+|ceph-osd-3|vgceph|lvosd2||250|
 
 ```bash
 cd admin-node
@@ -106,7 +106,13 @@ auth_cluster_required = cephx
 auth_service_required = cephx
 auth_client_required = cephx
 ```
-
-
-
-
+```bash
+[ceph-lab-admin@ceph-admin cluster]$ lsblk -I 8
+sdc               8:32   0 931.5G  0 disk 
+├─vgceph-lvmon1 253:0    0    10G  0 lvm  /var/lib/ceph-mon-1
+├─vgceph-lvmon2 253:1    0    10G  0 lvm  /var/lib/ceph-mon-2
+├─vgceph-lvmon3 253:2    0    10G  0 lvm  /var/lib/ceph-mon-3
+├─vgceph-lvosd1 253:3    0   250G  0 lvm  
+├─vgceph-lvosd2 253:4    0   250G  0 lvm  
+└─vgceph-lvosd3 253:5    0   250G  0 lvm  
+```
