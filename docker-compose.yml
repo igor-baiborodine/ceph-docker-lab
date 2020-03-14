@@ -5,6 +5,9 @@ services:
     image: ceph-admin-node
     container_name: ceph-admin
     hostname: ceph-admin
+#    privileged: true
+#    devices:
+#      - "/dev/sdc:/dev/sdc"
     tty: true
 
   ceph-mon-1:
@@ -14,8 +17,8 @@ services:
     privileged: true
     expose:
       - "6789"
-    volumes:
-      - /var/lib/ceph-mon-1:/var/lib/ceph
+#    volumes:
+#      - /var/lib/ceph-mon-1:/var/lib/ceph
 
   ceph-mon-2:
     image: ceph-infra-node
@@ -24,8 +27,8 @@ services:
     privileged: true
     expose:
       - "6789"
-    volumes:
-      - /var/lib/ceph-mon-2:/var/lib/ceph
+#    volumes:
+#      - /var/lib/ceph-mon-2:/var/lib/ceph
 
   ceph-mon-3:
     image: ceph-infra-node
@@ -34,8 +37,8 @@ services:
     privileged: true
     expose:
       - "6789"
-    volumes:
-      - /var/lib/ceph-mon-3:/var/lib/ceph
+#    volumes:
+#      - /var/lib/ceph-mon-3:/var/lib/ceph
 
   ceph-mgr-1:
     image: ceph-infra-node
@@ -51,7 +54,7 @@ services:
     hostname: ceph-ods-1
     privileged: true
     expose:
-      - "6800:6810"
+      - "6800-6810"
 
   ceph-ods-2:
     image: ceph-infra-node
@@ -59,7 +62,7 @@ services:
     hostname: ceph-ods-2
     privileged: true
     expose:
-      - "6800:6810"
+      - "6800-6810"
 
   ceph-ods-3:
     image: ceph-infra-node
@@ -67,4 +70,4 @@ services:
     hostname: ceph-ods-3
     privileged: true
     expose:
-      - "6800:6810"
+      - "6800-6810"

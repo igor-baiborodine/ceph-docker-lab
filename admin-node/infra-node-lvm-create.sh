@@ -28,3 +28,4 @@ sudo lvcreate -L 250G -n lvosd2 vgceph
 sudo lvcreate -L 250G -n lvosd3 vgceph
 
 lsblk -I 8
+sudo vgs -o +lv_size,lv_name

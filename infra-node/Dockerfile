@@ -15,7 +15,12 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == system
 # https://docs.ceph.com/docs/master/start/quick-start-preflight/
 RUN set -ex; \
     yum -y update; \
-    yum install -y sudo iproute openssh-server chrony; \
+    yum install -y \
+        which \
+        sudo \
+        iproute \
+        openssh-server \
+        chrony; \
     yum clean all; \
     useradd ceph-lab-admin; \
     echo "ceph-lab-admin:$CEPH_LAB_ADMIN_PWD" | chpasswd; \
