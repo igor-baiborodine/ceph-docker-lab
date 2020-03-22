@@ -18,6 +18,7 @@ RUN set -ex; \
     yum install -y \
         which \
         sudo \
+        lvm2 \
         iproute \
         openssh-server \
         chrony; \
@@ -27,6 +28,12 @@ RUN set -ex; \
     echo "ceph-lab-admin ALL = (root) NOPASSWD:ALL" > /etc/sudoers.d/ceph-lab-admin; \
     chmod 0440 /etc/sudoers.d/ceph-lab-admin
 
-VOLUME [ "/sys/fs/cgroup" ]
+#https://serverfault.com/a/804655
+RUN set -ex; \
+    sed -i 's/udev_sync = 1/udev_sync = 0/' /etc/lvm/lvm.conf; \
+    sed -i 's/udev_rules = 1/udev_rules = 0/' /etc/lvm/lvm.conf; \
+    cat /etc/lvm/lvm.conf | grep 'udev_'
+
+VOLUME ["/sys/fs/cgroup"]
 
 CMD ["/usr/sbin/init"]

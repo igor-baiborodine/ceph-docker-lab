@@ -118,3 +118,23 @@ sdc               8:32   0 931.5G  0 disk
 ├─vgceph-lvosd2 253:4    0   250G  0 lvm  
 └─vgceph-lvosd3 253:5    0   250G  0 lvm  
 ```
+
+OSD: zap device
+```bash
+[ceph-lab-admin@ceph-admin lab-cluster]$ ssh ceph-osd-1
+
+[ceph-lab-admin@ceph-osd-1 ~]$ udevadm info --query=property /dev/sdc
+<...>
+[ceph-lab-admin@ceph-osd-1 ~]$ sudo ceph-volume lvm zap /dev/sdc --destroy
+--> Zapping: /dev/sdc
+Running command: /bin/dd if=/dev/zero of=/dev/sdc bs=1M count=10
+ stderr: 10+0 records in
+10+0 records out
+10485760 bytes (10 MB) copied
+ stderr: , 0.201899 s, 51.9 MB/s
+--> Zapping successful for: <Raw Device: /dev/sdc>
+
+[ceph-lab-admin@ceph-osd-1 ~]$ sudo blkid /dev/sdc1
+/dev/sdc1: PARTLABEL="primary" PARTUUID="477b63b8-bba1-40d4-92bf-7eaa63a44238" 
+```
+docker run -d --privileged=true -v /dev/:/dev/ -e OSD_DEVICE=/dev/sdc ceph/daemon zap_device

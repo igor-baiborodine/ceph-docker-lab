@@ -5,10 +5,21 @@ services:
     image: ceph-admin-node
     container_name: ceph-admin
     hostname: ceph-admin
-#    privileged: true
-#    devices:
-#      - "/dev/sdc:/dev/sdc"
     tty: true
+
+  ceph-mon-0:
+    image: ceph-infra-node
+    container_name: ceph-mon-0
+    hostname: ceph-mon-0
+    privileged: true
+    expose:
+      - "6789"
+    tmpfs:
+      - /tmp
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+#      - /var/lib/ceph-mon-0:/var/lib/ceph
 
   ceph-mon-1:
     image: ceph-infra-node
@@ -17,8 +28,12 @@ services:
     privileged: true
     expose:
       - "6789"
-#    volumes:
-#      - /var/lib/ceph-mon-1:/var/lib/ceph
+    tmpfs:
+      - /tmp
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+#      - /var/lib/ceph-mon-0:/var/lib/ceph
 
   ceph-mon-2:
     image: ceph-infra-node
@@ -27,26 +42,38 @@ services:
     privileged: true
     expose:
       - "6789"
-#    volumes:
+    tmpfs:
+      - /tmp
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 #      - /var/lib/ceph-mon-2:/var/lib/ceph
 
-  ceph-mon-3:
+  ceph-mgr-0:
     image: ceph-infra-node
-    container_name: ceph-mon-3
-    hostname: ceph-mon-3
-    privileged: true
-    expose:
-      - "6789"
-#    volumes:
-#      - /var/lib/ceph-mon-3:/var/lib/ceph
-
-  ceph-mgr-1:
-    image: ceph-infra-node
-    container_name: ceph-mgr-1
-    hostname: ceph-mgr-1
+    container_name: ceph-mgr-0
+    hostname: ceph-mgr-0
     privileged: true
     expose:
       - "6800-7300"
+    tmpfs:
+      - /tmp
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  ceph-osd-0:
+    image: ceph-infra-node
+    container_name: ceph-osd-0
+    hostname: ceph-osd-0
+    privileged: true
+    expose:
+      - "6800-6810"
+    tmpfs:
+      - /tmp
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   ceph-osd-1:
     image: ceph-infra-node
@@ -55,6 +82,11 @@ services:
     privileged: true
     expose:
       - "6800-6810"
+    tmpfs:
+      - /tmp
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
   ceph-osd-2:
     image: ceph-infra-node
@@ -63,11 +95,8 @@ services:
     privileged: true
     expose:
       - "6800-6810"
-
-  ceph-osd-3:
-    image: ceph-infra-node
-    container_name: ceph-osd-3
-    hostname: ceph-osd-3
-    privileged: true
-    expose:
-      - "6800-6810"
+    tmpfs:
+      - /tmp
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro

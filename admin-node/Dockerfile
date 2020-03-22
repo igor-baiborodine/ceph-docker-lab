@@ -23,7 +23,7 @@ RUN set -ex; \
     mkdir /home/ceph-lab-admin/lab-cluster
 
 COPY .ssh/config /home/ceph-lab-admin/.ssh/config
-COPY infra-node-ssh-config.sh /home/ceph-lab-admin/
+COPY add-known-host.sh /home/ceph-lab-admin/
 
 RUN chown -R ceph-lab-admin:ceph-lab-admin /home/ceph-lab-admin; \
     chmod 600 /home/ceph-lab-admin/.ssh/config
