@@ -32,7 +32,7 @@ RUN set -ex; \
 RUN set -ex; \
     sed -i 's/udev_sync = 1/udev_sync = 0/' /etc/lvm/lvm.conf; \
     sed -i 's/udev_rules = 1/udev_rules = 0/' /etc/lvm/lvm.conf; \
-    cat /etc/lvm/lvm.conf | grep 'udev_'
+    grep 'udev_' /etc/lvm/lvm.conf
 
 VOLUME ["/sys/fs/cgroup"]
 

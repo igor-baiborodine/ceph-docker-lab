@@ -125,6 +125,7 @@ OSD: zap device
 
 [ceph-lab-admin@ceph-osd-1 ~]$ udevadm info --query=property /dev/sdc
 <...>
+[ceph-lab-admin@ceph-osd-1 ~]$ sudo systemctl stop ceph\*.service ceph\*.target
 [ceph-lab-admin@ceph-osd-1 ~]$ sudo ceph-volume lvm zap /dev/sdc --destroy
 --> Zapping: /dev/sdc
 Running command: /bin/dd if=/dev/zero of=/dev/sdc bs=1M count=10
@@ -138,3 +139,9 @@ Running command: /bin/dd if=/dev/zero of=/dev/sdc bs=1M count=10
 /dev/sdc1: PARTLABEL="primary" PARTUUID="477b63b8-bba1-40d4-92bf-7eaa63a44238" 
 ```
 docker run -d --privileged=true -v /dev/:/dev/ -e OSD_DEVICE=/dev/sdc ceph/daemon zap_device
+
+https://docs.ceph.com/docs/master/rados/operations/operating/
+
+time sync with chrony:
+https://www.linuxtechi.com/sync-time-in-linux-server-using-chrony/
+
