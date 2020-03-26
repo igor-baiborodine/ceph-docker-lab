@@ -56,6 +56,8 @@ services:
     privileged: true
     expose:
       - "6800-7300"
+    ports:
+      - "8080:8080"
     tmpfs:
       - /tmp
       - /run
@@ -95,6 +97,19 @@ services:
     privileged: true
     expose:
       - "6800-6810"
+    tmpfs:
+      - /tmp
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  ceph-rgw-0:
+    image: ceph-infra-node
+    container_name: ceph-rgw-0
+    hostname: ceph-rgw-0
+    privileged: true
+    ports:
+      - "80:7480"
     tmpfs:
       - /tmp
       - /run

@@ -125,7 +125,7 @@ OSD: zap device
 
 [ceph-lab-admin@ceph-osd-1 ~]$ udevadm info --query=property /dev/sdc
 <...>
-[ceph-lab-admin@ceph-osd-1 ~]$ sudo systemctl stop ceph\*.service ceph\*.target
+[ceph-lab-admin@ceph-osd-1 ~]$ sudo systemctl stop ceph\*.service ceph\*.target && sudo ceph-volume lvm zap /dev/sdc --destroy
 [ceph-lab-admin@ceph-osd-1 ~]$ sudo ceph-volume lvm zap /dev/sdc --destroy
 --> Zapping: /dev/sdc
 Running command: /bin/dd if=/dev/zero of=/dev/sdc bs=1M count=10
@@ -144,4 +144,86 @@ https://docs.ceph.com/docs/master/rados/operations/operating/
 
 time sync with chrony:
 https://www.linuxtechi.com/sync-time-in-linux-server-using-chrony/
+
+Pools, placement groups
+https://docs.ceph.com/docs/mimic/rados/operations/pools/
+https://docs.ceph.com/docs/mimic/rados/operations/data-placement/
+
+RGW
+```bash
+igor@tlpacr-2018:~/GitRepos/ceph-docker-lab$ curl http://localhost:80 | xmllint --format -
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   214    0   214    0     0  53500      0 --:--:-- --:--:-- --:--:-- 71333
+<?xml version="1.0" encoding="UTF-8"?>
+<ListAllMyBucketsResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Owner>
+    <ID>anonymous</ID>
+    <DisplayName/>
+  </Owner>
+  <Buckets/>
+</ListAllMyBucketsResult>
+```
+
+```bash
+[ceph-lab-admin@ceph-rgw-0 ~]$ sudo radosgw-admin user create --uid="igor" --display-name="Igor"
+{
+    "user_id": "igor",
+    "display_name": "Igor",
+    "email": "",
+    "suspended": 0,
+    "max_buckets": 1000,
+    "auid": 0,
+    "subusers": [],
+    "keys": [
+        {
+            "user": "igor",
+            "access_key": "ZADNRUAEAB2VM4UAUF4R",
+            "secret_key": "ffzwkpCuKKYpnJ0YjPG4JDvit09LVxI5iDmTyRvZ"
+        }
+    ],
+    "swift_keys": [],
+    "caps": [],
+    "op_mask": "read, write, delete",
+    "default_placement": "",
+    "placement_tags": [],
+    "bucket_quota": {
+        "enabled": false,
+        "check_on_raw": false,
+        "max_size": -1,
+        "max_size_kb": 0,
+        "max_objects": -1
+    },
+    "user_quota": {
+        "enabled": false,
+        "check_on_raw": false,
+        "max_size": -1,
+        "max_size_kb": 0,
+        "max_objects": -1
+    },
+    "temp_url_keys": [],
+    "type": "rgw",
+    "mfa_ids": []
+}
+```
+
+
+```bash
+sudo apt install -y s3cmd
+```
+
+Manager
+```bash
+[ceph-lab-admin@ceph-mgr-0 ~]$ sudo ceph mgr module enable dashboard
+[ceph-lab-admin@ceph-mgr-0 ~]$ sudo ceph mgr module ls
+{
+    "enabled_modules": [
+        "balancer",
+        "crash",
+        "dashboard",
+        "iostat",
+        "restful",
+        "status"
+    ],
+```
 
