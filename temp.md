@@ -225,5 +225,8 @@ Manager
         "restful",
         "status"
     ],
+[ceph-lab-admin@ceph-mgr-0 ~]$ sudo ceph config set mgr mgr/dashboard/ssl false
+[ceph-lab-admin@ceph-mgr-0 ~]$ sudo ceph dashboard set-login-credentials igor abc123
+# access the UI from the host at http://localhost:8080
 ```
 
