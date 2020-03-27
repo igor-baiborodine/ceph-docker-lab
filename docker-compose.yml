@@ -19,7 +19,6 @@ services:
       - /run
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-#      - /var/lib/ceph-mon-0:/var/lib/ceph
 
   ceph-mon-1:
     image: ceph-infra-node
@@ -33,7 +32,6 @@ services:
       - /run
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-#      - /var/lib/ceph-mon-0:/var/lib/ceph
 
   ceph-mon-2:
     image: ceph-infra-node
@@ -47,7 +45,6 @@ services:
       - /run
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-#      - /var/lib/ceph-mon-2:/var/lib/ceph
 
   ceph-mgr-0:
     image: ceph-infra-node
