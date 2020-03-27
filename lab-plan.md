@@ -5,7 +5,7 @@
 * 3 disk partitions 250G each
 
 ```bash
-igor@tlpacr-2018:~$ lsblk -I 8
+~$ lsblk -I 8
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
 sdc      8:32   0 931.5G  0 disk 
 ├─sdc1   8:33   0   250G  0 part 
@@ -30,15 +30,20 @@ TODO:
 * map preflight checklist requirements & initial setup steps to implemented Dockerfile and docker-compose files
 * elaborate on Docker networking
 
-## Build Docker images
+## Clone repository and build Docker images
 ```bash
-igor@tlpacr-2018:~$ docker build --rm -t ceph-admin-node https://github.com/igor-baiborodine/ceph-docker-lab.git#master:admin-node
-igor@tlpacr-2018:~$ docker build --rm -t ceph-infra-node https://github.com/igor-baiborodine/ceph-docker-lab.git#master:admin-node
-igor@tlpacr-2018:~$ docker image ls
+~/GitRepos$ git clone https://github.com/igor-baiborodine/ceph-docker-lab.git
+~/GitRepos$ cd ceph-docker-lab
+~/GitRepos/ceph-docker-lab$ docker build --rm -t ceph-admin-node admin-node
+~/GitRepos/ceph-docker-lab$ docker build --rm -t ceph-infra-node infra-node
+~/GitRepos/ceph-docker-lab$ docker image ls
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 ceph-infra-node     latest              0e799d02e962        4 days ago          307MB
 ceph-admin-node     latest              ee9ca9ec556d        4 days ago          304MB
 ```
 
+TODO: define network in docker-compose(ceph-public-network)
 ## Create cluster
+```bash
 
+```
