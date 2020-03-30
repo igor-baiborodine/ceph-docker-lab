@@ -347,6 +347,8 @@ Images:
 * ceph-dashboard-rgw-daemons.png
 * ceph-dashboard-rgw-users.png
 
+**TODO**: elaborate on default pools, placement groups and CRASH maps
+
 Check if the RGW instance is accessible from the host machine:
 ```bash
 ~/GitRepos/ceph-docker-lab$ curl http://localhost:80 | xmllint --format -
@@ -361,4 +363,79 @@ Check if the RGW instance is accessible from the host machine:
   </Owner>
   <Buckets/>
 </ListAllMyBucketsResult>
+```
+
+Install command line S3 client [s3cmd](https://s3tools.org/s3cmd)
+```bash
+~/GitRepos/ceph-docker-lab$ sudo apt install -y s3cmd
+```
+
+```bash
+~/GitRepos/ceph-docker-lab$ s3cmd --configure -c s3-ceph-docker-lab.cfg
+Enter new values or accept defaults in brackets with Enter.
+Refer to user manual for detailed description of all options.
+
+Access key and Secret key are your identifiers for Amazon S3. Leave them empty for using the env variables.
+Access Key: 3EIRP6LE085KYW8Y224Y    
+Secret Key: ut7hpdnTOUN1FEyqWDIzOoyRxaDfNhcgTQCShyUx
+Default Region [US]: 
+
+Use "s3.amazonaws.com" for S3 Endpoint and not modify it to the target Amazon S3.
+S3 Endpoint [s3.amazonaws.com]: localhost:80
+
+Use "%(bucket)s.s3.amazonaws.com" to the target Amazon S3. "%(bucket)s" and "%(location)s" vars can be used
+if the target S3 system supports dns based buckets.
+DNS-style bucket+hostname:port template for accessing a bucket [%(bucket)s.s3.amazonaws.com]: %(bucket)s.localhost:80
+
+Encryption password is used to protect your files from reading
+by unauthorized persons while in transfer to S3
+Encryption password: 
+Path to GPG program [/usr/bin/gpg]: 
+
+When using secure HTTPS protocol all communication with Amazon S3
+servers is protected from 3rd party eavesdropping. This method is
+slower than plain HTTP, and can only be proxied with Python 2.7 or newer
+Use HTTPS protocol [Yes]: No
+
+On some networks all internet access must go through a HTTP proxy.
+Try setting it here if you can't connect to S3 directly
+HTTP Proxy server name: 
+
+New settings:
+  Access Key: 3EIRP6LE085KYW8Y224Y
+  Secret Key: ut7hpdnTOUN1FEyqWDIzOoyRxaDfNhcgTQCShyUx
+  Default Region: US
+  S3 Endpoint: localhost:80
+  DNS-style bucket+hostname:port template for accessing a bucket: %(bucket)s.localhost:80
+  Encryption password: 
+  Path to GPG program: /usr/bin/gpg
+  Use HTTPS protocol: False
+  HTTP Proxy server name: 
+  HTTP Proxy server port: 0
+
+Test access with supplied credentials? [Y/n] Y
+Please wait, attempting to list all buckets...
+Success. Your access key and secret key worked fine :-)
+
+Now verifying that encryption works...
+Not configured. Never mind.
+
+Save settings? [y/N] y
+Configuration saved to 's3-ceph-docker-lab.cfg'
+```
+Test bucket creation
+```bash
+igor@tlpacr-2018:~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg mb s3://TEST_BUCKET
+Bucket 's3://TEST_BUCKET/' created
+```
+Images:
+* ceph-dashboard-s3-test-bucket.png
+
+Upload a file to the test bucket
+```bash
+~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg put README.md s3://TEST_BUCKET
+upload: 'README.md' -> 's3://TEST_BUCKET/README.md'  [1 of 1]
+ 24 of 24   100% in    2s    10.84 B/s  done
+~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg la
+2020-03-30 11:30        24   s3://TEST_BUCKET/README.md
 ```
