@@ -131,7 +131,7 @@ Connection to ceph-mon-0 closed.
 [ceph_deploy.new][DEBUG ] Resolving host ceph-mon-0
 [ceph_deploy.new][DEBUG ] Monitor ceph-mon-0 at 172.24.0.4
 [ceph_deploy.new][INFO  ] making sure passwordless SSH succeeds
-... output for ceph-mon-1 and ceph-mon-2
+[...]
 [ceph_deploy.new][DEBUG ] Monitor initial members are ['ceph-mon-0', 'ceph-mon-1', 'ceph-mon-2']
 [ceph_deploy.new][DEBUG ] Monitor addrs are ['172.24.0.4', '172.24.0.3', '172.24.0.5']
 [ceph_deploy.new][DEBUG ] Creating a random mon key...
