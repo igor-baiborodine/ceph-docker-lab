@@ -35,33 +35,51 @@ Refs:
 ## Clone repository and build Docker images
 **TODO**: write-up
 ```bash
-~/GitRepos$ git clone https://github.com/igor-baiborodine/ceph-docker-lab.git
-~/GitRepos$ cd ceph-docker-lab
-~/GitRepos/ceph-docker-lab$ docker build --rm -t ceph-admin-node admin-node
-~/GitRepos/ceph-docker-lab$ docker build --rm -t ceph-infra-node infra-node
-~/GitRepos/ceph-docker-lab$ docker image ls
+igor@lptacr:~/GitRepos$ git clone https://github.com/igor-baiborodine/ceph-docker-lab.git
+igor@lptacr:~/GitRepos$ cd ceph-docker-lab
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker build --rm -t ceph-admin-node admin-node
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker build --rm -t ceph-infra-node infra-node
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker image ls
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 ceph-infra-node     latest              0e799d02e962        4 days ago          307MB
 ceph-admin-node     latest              ee9ca9ec556d        4 days ago          304MB
 ```
 
-### Create cluster 
+## Create cluster 
 Refs:
 * https://docs.ceph.com/docs/mimic/start/quick-ceph-deploy/#
 
 **TODO**: write-up
 
+### Admin node
+```bash
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-admin
+Creating network "cephdockerlab_default" with the default driver
+Creating ceph-admin ... 
+Creating ceph-admin ... done
+```
+
 ### Monitors
 ```bash
-~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-admin ceph-mon-0 ceph-mon-1 ceph-mon-2
-Creating network "ceph-docker-lab_default" with the default driver
-Creating ceph-admin ... done
-Creating ceph-mon-2 ... done
-Creating ceph-mon-1 ... done
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-mon-0
+Creating ceph-mon-0 ... 
 Creating ceph-mon-0 ... done
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-mon-1
+Creating ceph-mon-1 ... 
+Creating ceph-mon-1 ... done
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-mon-2
+Creating ceph-mon-2 ... 
+Creating ceph-mon-2 ... done
 ```
 ```bash
-~/GitRepos/ceph-docker-lab$ docker exec -it ceph-admin bash
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ceph-admin ceph-mon-0 ceph-mon-1 ceph-mon-2
+172.18.0.2
+172.18.0.3
+172.18.0.4
+172.18.0.5
+```
+```bash
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker exec -it ceph-admin bash
 ```
 Check if a monitor container is reachable
 ```bash
@@ -154,7 +172,7 @@ auth_service_required = cephx
 auth_client_required = cephx
 ```
 ```bash
-[ceph-lab-admin@ceph-admin lab-cluster]$ ceph-deploy deploy ceph-mon-0 ceph-mon-1 ceph-mon-2
+[ceph-lab-admin@ceph-admin lab-cluster]$ ceph-deploy install ceph-mon-0 ceph-mon-1 ceph-mon-2
 ```
 ```bash
 [ceph-lab-admin@ceph-admin lab-cluster]$ ceph-deploy mon create-initial
@@ -184,23 +202,23 @@ ceph.bootstrap-mgr.keyring  ceph.client.admin.keyring
 
 ### Manager
 ```bash
-~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-mgr-0
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-mgr-0
 Creating ceph-mgr-0 ... done
 ```
 ```bash
 [ceph-lab-admin@ceph-admin lab-cluster]$ ../infra-node-ssh-config.sh ceph-mgr-0
 [ceph-lab-admin@ceph-admin lab-cluster]$ ceph-deploy install ceph-mgr-0   
-[ceph-lab-admin@ceph-admin lab-cluster]$ ceph-deploy admin ceph-mgr-0   
+[ceph-lab-admin@ceph-admin lab-cluster]$ ceph-deploy admin ceph-mgr-0  
+[ceph-lab-admin@ceph-admin lab-cluster]$ ceph-deploy mgr create ceph-mgr-0
 ```
 ```bash
-[ceph-lab-admin@ceph-admin lab-cluster]$ ssh ceph-mon-0 sudo ceph -s
+[ceph-lab-admin@ceph-admin lab-cluster]$ ssh ceph-mgr-0 sudo ceph -s
   cluster:
-    id:     fce82e2f-ed75-4a7d-8f47-e96bb6c2174f
-    health: HEALTH_WARN
-            OSD count 0 < osd_pool_default_size 3
+    id:     d881e97c-3d90-4c3a-b0cc-c49c13f25baa
+    health: HEALTH_OK
  
   services:
-    mon: 3 daemons, quorum ceph-mon-1,ceph-mon-0,ceph-mon-2
+    mon: 3 daemons, quorum ceph-mon-0,ceph-mon-1,ceph-mon-2
     mgr: ceph-mgr-0(active)
     osd: 0 osds: 0 up, 0 in
  
@@ -211,8 +229,13 @@ Creating ceph-mgr-0 ... done
     pgs:     
 ```
 
-### Dashboard
+#### Dashboard
 https://docs.ceph.com/docs/master/mgr/dashboard/
+```bash
+docker-compose up -d ceph-mgr-0
+Creating ceph-mgr-0 ... 
+Creating ceph-mgr-0 ... done
+```
 ```bash
 [ceph-lab-admin@ceph-admin lab-cluster]$ ssh ceph-mgr-0 sudo ceph mgr module enable dashboard
 [ceph-lab-admin@ceph-admin lab-cluster]$ ssh ceph-mgr-0 sudo ceph mgr module ls           
@@ -257,9 +280,14 @@ Images:
 ### OSD
 
 ```bash
-igor@tlpacr-2018:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-osd-0 ceph-osd-1 ceph-osd-2
-Creating ceph-osd-1 ... done
+igor@lptacr:igor@lptacr:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-osd-0
+Creating ceph-osd-0 ... 
 Creating ceph-osd-0 ... done
+igor@lptacr:igor@lptacr:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-osd-1
+Creating ceph-osd-1 ... 
+Creating ceph-osd-1 ... done
+igor@lptacr:igor@lptacr:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-osd-2
+Creating ceph-osd-2 ... 
 Creating ceph-osd-2 ... done
 ```
 ```bash
@@ -280,7 +308,7 @@ Images:
 
 ### RADOS Gateway(RGW)
 ```bash
-igor@tlpacr-2018:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-rgw-0 
+igor@tlpacr:~/GitRepos/ceph-docker-lab$ docker-compose up -d ceph-rgw-0 
 Creating ceph-rgw-0 ... done
 ```
 ```bash
@@ -308,8 +336,8 @@ https://docs.ceph.com/docs/master/mgr/dashboard/#enabling-the-object-gateway-man
     "keys": [
         {
             "user": "igor",
-            "access_key": "3EIRP6LE085KYW8Y224Y",
-            "secret_key": "ut7hpdnTOUN1FEyqWDIzOoyRxaDfNhcgTQCShyUx"
+            "access_key": "4363C165KXPDX63WVUZA",
+            "secret_key": "4y8CFFyeHEIzA4yZAiP3OO0epLKmyZsDAN50fDQk"
         }
     ],
     "swift_keys": [],
@@ -338,9 +366,9 @@ https://docs.ceph.com/docs/master/mgr/dashboard/#enabling-the-object-gateway-man
 }
 ```
 ```bash
-[ceph-lab-admin@ceph-admin lab-cluster]$ ssh ceph-mgr-0 sudo ceph dashboard set-rgw-api-access-key 3EIRP6LE085KYW8Y224Y  
+[ceph-lab-admin@ceph-admin lab-cluster]$ ssh ceph-mgr-0 sudo ceph dashboard set-rgw-api-access-key 4363C165KXPDX63WVUZA 
 Option RGW_API_ACCESS_KEY updated
-[ceph-lab-admin@ceph-admin lab-cluster]$ ssh ceph-mgr-0 sudo ceph dashboard set-rgw-api-secret-key ut7hpdnTOUN1FEyqWDIzOoyRxaDfNhcgTQCShyUx 
+[ceph-lab-admin@ceph-admin lab-cluster]$ ssh ceph-mgr-0 sudo ceph dashboard set-rgw-api-secret-key 4y8CFFyeHEIzA4yZAiP3OO0epLKmyZsDAN50fDQk 
 Option RGW_API_SECRET_KEY updated
 ```
 Images:
@@ -351,7 +379,7 @@ Images:
 
 Check if the RGW instance is accessible from the host machine:
 ```bash
-~/GitRepos/ceph-docker-lab$ curl http://localhost:80 | xmllint --format -
+igor@lptacr:~/GitRepos/ceph-docker-lab$ curl http://localhost:80 | xmllint --format -
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100   214    0   214    0     0  53500      0 --:--:-- --:--:-- --:--:-- 71333
@@ -367,11 +395,11 @@ Check if the RGW instance is accessible from the host machine:
 
 Install command line S3 client [s3cmd](https://s3tools.org/s3cmd)
 ```bash
-~/GitRepos/ceph-docker-lab$ sudo apt install -y s3cmd
+igor@lptacr:~/GitRepos/ceph-docker-lab$ sudo apt install -y s3cmd
 ```
 
 ```bash
-~/GitRepos/ceph-docker-lab$ s3cmd --configure -c s3-ceph-docker-lab.cfg
+igor@lptacr:~/GitRepos/ceph-docker-lab$ s3cmd --configure -c s3-ceph-docker-lab.cfg
 Enter new values or accept defaults in brackets with Enter.
 Refer to user manual for detailed description of all options.
 
@@ -425,7 +453,7 @@ Configuration saved to 's3-ceph-docker-lab.cfg'
 ```
 Test bucket creation
 ```bash
-igor@tlpacr-2018:~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg mb s3://TEST_BUCKET
+igor@lptacr:~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg mb s3://TEST_BUCKET
 Bucket 's3://TEST_BUCKET/' created
 ```
 Images:
@@ -433,9 +461,79 @@ Images:
 
 Upload a file to the test bucket
 ```bash
-~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg put README.md s3://TEST_BUCKET
+igor@lptacr:~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg put README.md s3://TEST_BUCKET
 upload: 'README.md' -> 's3://TEST_BUCKET/README.md'  [1 of 1]
  24 of 24   100% in    2s    10.84 B/s  done
-~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg la
+igor@lptacr:~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg la
 2020-03-30 11:30        24   s3://TEST_BUCKET/README.md
 ```
+
+## Load testing
+
+
+## Cluster restart
+https://docs.ceph.com/docs/master/rados/operations/add-or-rm-mons/
+
+### First start
+```bash
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ceph-mon-0 ceph-mon-1 ceph-mon-2
+172.18.0.5
+172.18.0.3
+172.18.0.4
+```
+```bash
+[ceph-lab-admin@ceph-mon-0 ~]$ sudo ceph mon getmap 0 -o /tmp/ceph-mon.map
+got monmap epoch 1
+[ceph-lab-admin@ceph-mon-0 ~]$ monmaptool --print /tmp/ceph-mon.map
+monmaptool: monmap file /tmp/ceph-mon.map
+epoch 1
+fsid d881e97c-3d90-4c3a-b0cc-c49c13f25baa
+last_changed 2020-04-03 00:39:13.390059
+created 2020-04-03 00:39:13.390059
+0: 172.18.0.3:6789/0 mon.ceph-mon-1
+1: 172.18.0.4:6789/0 mon.ceph-mon-2
+2: 172.18.0.5:6789/0 mon.ceph-mon-0
+```
+
+### Second start
+```bash
+igor@lptacr:~/GitRepos/ceph-docker-lab$ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ceph-mon-0 ceph-mon-1 ceph-mon-2
+172.18.0.2
+172.18.0.3
+172.18.0.4
+```
+ceph-mon-0's IP address changed from 172.18.0.5 to 172.18.0.2  
+```bash
+[ceph-lab-admin@ceph-mon-0 ~]$ sudo ceph -s
+  cluster:
+    id:     d881e97c-3d90-4c3a-b0cc-c49c13f25baa
+    health: HEALTH_WARN
+            1/3 mons down, quorum ceph-mon-1,ceph-mon-2
+ 
+  services:
+    mon: 3 daemons, quorum ceph-mon-1,ceph-mon-2, out of quorum: ceph-mon-0
+    mgr: no daemons active
+    osd: 0 osds: 0 up, 0 in
+ 
+  data:
+    pools:   0 pools, 0 pgs
+    objects: 0  objects, 0 B
+    usage:   0 B used, 0 B / 0 B avail
+    pgs:     
+```
+```bash
+[ceph-lab-admin@ceph-mon-0 ~]$ sudo monmaptool --rm ceph-mon-0 /tmp/ceph-mon.map
+monmaptool: monmap file /tmp/ceph-mon.map
+monmaptool: removing ceph-mon-0
+monmaptool: writing epoch 1 to /tmp/ceph-mon.map (2 monitors)
+[ceph-lab-admin@ceph-mon-0 ~]$ sudo monmaptool --add ceph-mon-0 172.18.0.2:6789 /tmp/ceph-mon.map
+# see inject monmap
+```
+
+```bash
+[ceph-lab-admin@ceph-osd-0 ~]$ sudo systemctl stop ceph\*.service ceph\*.target
+[ceph-lab-admin@ceph-osd-0 ~]$ sudo ceph mon remove ceph-mon-0
+# Remove the monitor entry from ceph.conf.
+```
+
+
