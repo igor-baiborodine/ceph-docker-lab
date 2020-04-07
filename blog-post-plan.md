@@ -468,8 +468,55 @@ igor@lptacr:~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg la
 2020-03-30 11:30        24   s3://TEST_BUCKET/README.md
 ```
 
-## Load testing
+## Basic performance testing
+https://novabench.com/parts/hdd/toshiba-mq04abf100
+https://medium.com/@crossphd/how-to-fix-slow-usb-3-0-transfer-speeds-213455173b91
 
+```bash
+igor@lptacr:~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg put ~/Pictures/s3-ceph-docker-lab/20180403_081221.mp4 s3://TEST_SPEED_1
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_1/20180403_081221.mp4'  [part 1 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s    14.92 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_1/20180403_081221.mp4'  [part 2 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    0s    19.33 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_1/20180403_081221.mp4'  [part 3 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    0s    18.04 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_1/20180403_081221.mp4'  [part 4 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    0s    16.69 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_1/20180403_081221.mp4'  [part 5 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    0s    20.80 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_1/20180403_081221.mp4'  [part 6 of 6, 12MB] [1 of 1]
+ 12631240 of 12631240   100% in    0s    13.45 MB/s  done
+```
+```bash
+igor@lptacr:~/GitRepos/ceph-docker-lab$ s3cmd -c s3-ceph-docker-lab.cfg put ~/Pictures/s3-ceph-docker-lab/20180403_081221.mp4 s3://TEST_SPEED_2 & \
+    s3cmd -c s3-ceph-docker-lab.cfg put ~/Pictures/s3-ceph-docker-lab/20180403_081221.mp4 s3://TEST_SPEED_3 &
+[1] 87291
+[2] 87292
+igor@lptacr:~/GitRepos/ceph-docker-lab$ upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_2/20180403_081221.mp4'  [part 1 of 6, 15MB] [1 of 1]
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_3/20180403_081221.mp4'  [part 1 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s     9.69 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_2/20180403_081221.mp4'  [part 2 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s     9.56 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_3/20180403_081221.mp4'  [part 2 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s     9.68 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_3/20180403_081221.mp4'  [part 3 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s     9.48 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_2/20180403_081221.mp4'  [part 3 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s    10.18 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_2/20180403_081221.mp4'  [part 4 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s     9.74 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_3/20180403_081221.mp4'  [part 4 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s     8.91 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_2/20180403_081221.mp4'  [part 5 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s     9.14 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_3/20180403_081221.mp4'  [part 5 of 6, 15MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s     9.08 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_2/20180403_081221.mp4'  [part 6 of 6, 12MB] [1 of 1]
+ 15728640 of 15728640   100% in    1s     8.05 MB/s  done
+upload: '/home/igor/Pictures/s3-ceph-docker-lab/20180403_081221.mp4' -> 's3://TEST_SPEED_3/20180403_081221.mp4'  [part 6 of 6, 12MB] [1 of 1]
+ 12631240 of 12631240   100% in    1s     6.67 MB/s  done
+ 12631240 of 12631240   100% in    1s     6.66 MB/s  done
+```
 
 ## Cluster restart
 https://docs.ceph.com/docs/master/rados/operations/add-or-rm-mons/

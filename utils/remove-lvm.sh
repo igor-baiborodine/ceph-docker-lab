@@ -3,10 +3,6 @@ set -ex
 
 disk=$1
 
-sudo umount /dev/vgceph/lvmon1
-sudo umount /dev/vgceph/lvmon2
-sudo umount /dev/vgceph/lvmon3
-
 sudo lvremove -y /dev/vgceph/lvmon1
 sudo lvremove -y /dev/vgceph/lvmon2
 sudo lvremove -y /dev/vgceph/lvmon3

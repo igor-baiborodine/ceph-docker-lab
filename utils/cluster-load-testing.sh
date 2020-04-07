@@ -8,7 +8,7 @@ echo "buckets_count: $buckets_count, s3cfg_file: $s3cfg_file, source_folder: $so
 
 for i in $(seq 1 "$buckets_count")
 do
-  bucket_name="b_PHOTOS_$i"
+  bucket_name="PHOTOS_$i"
   echo "Creating bucket $bucket_name..."
   s3cmd -c "$s3cfg_file" mb "s3://$bucket_name"
 

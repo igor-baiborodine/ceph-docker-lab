@@ -121,11 +121,16 @@ sdc               8:32   0 931.5G  0 disk
 
 OSD: zap device
 ```bash
+# https://github.com/ceph/ceph-container
+docker run -d --privileged=true -v /dev/:/dev/ -e OSD_DEVICE=/dev/sdd ceph/daemon zap_device
+```
+
+```bash
 [ceph-lab-admin@ceph-admin lab-cluster]$ ssh ceph-osd-1
 
 [ceph-lab-admin@ceph-osd-1 ~]$ udevadm info --query=property /dev/sdc
 <...>
-[ceph-lab-admin@ceph-osd-1 ~]$ sudo systemctl stop ceph\*.service ceph\*.target && sudo ceph-volume lvm zap /dev/sdc --destroy
+[ceph-lab-admin@ceph-osd-1 ~]$ sudo systemctl stop ceph\*.service ceph\*.target 
 [ceph-lab-admin@ceph-osd-1 ~]$ sudo ceph-volume lvm zap /dev/sdc --destroy
 --> Zapping: /dev/sdc
 Running command: /bin/dd if=/dev/zero of=/dev/sdc bs=1M count=10
