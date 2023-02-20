@@ -1,7 +1,27 @@
 # ceph-docker-lab
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Host environment](#host-environment)
+- [Docker images](#docker-images)
+- [Cluster configuration, the Docker way](#cluster-configuration-the-docker-way)
+- [Preflight checklist & Ceph node setup](#preflight-checklist--ceph-node-setup)
+- [Clone repository and build Docker images](#clone-repository-and-build-docker-images)
+- [Create cluster](#create-cluster)
+  - [Admin node](#admin-node)
+  - [Monitors](#monitors)
+  - [Manager](#manager)
+    - [Dashboard](#dashboard)
+  - [OSD](#osd)
+  - [RADOS Gateway(RGW)](#rados-gatewayrgw)
+- [Basic performance testing](#basic-performance-testing)
+- [Cluster restart](#cluster-restart)
+  - [First start](#first-start)
+  - [Second start](#second-start)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Host environment
 * Ubuntu 18.04.4 LTS
