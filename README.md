@@ -1,3 +1,8 @@
+# ceph-docker-lab
+
+<!-- START doctoc -->
+<!-- END doctoc -->
+
 ## Host environment
 * Ubuntu 18.04.4 LTS
 * Docker 19.03.8, Docker Compose 1.17.1
