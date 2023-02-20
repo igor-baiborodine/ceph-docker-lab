@@ -8,7 +8,7 @@ on:
       - 'README.md'
 
 jobs:
-  update-toc:
+  update_toc:
     runs-on: ubuntu-latest
     steps:
       - uses: technote-space/toc-generator@v4
