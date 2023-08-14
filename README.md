@@ -1,6 +1,6 @@
 # ceph-docker-lab
 
-**Work in progress...**
+This project is an exercise to create and explore Ceph-based S3-compatible object storage.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
